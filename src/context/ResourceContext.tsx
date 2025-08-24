@@ -7,6 +7,7 @@ import React, {
   useMemo,
 } from "react";
 import { LinkIcon, FileTextIcon, PlayIcon } from "lucide-react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 
 // Define resource types
 export type ResourceType = "PDF" | "Video" | "Link" | "DOC";
@@ -53,7 +54,7 @@ interface ResourceContextValue extends ResourceContextState {
   setSearchQuery: (query: string) => void;
   toggleFilter: (
     filterType: "tags" | "documentTypes" | "categories",
-    value: string,
+    value: string
   ) => void;
   clearFilters: () => void;
   toggleUserMode: () => void;
@@ -133,7 +134,7 @@ const sampleResources: Resource[] = [
 
 // Create the context
 const ResourceContext = createContext<ResourceContextValue | undefined>(
-  undefined,
+  undefined
 );
 
 // Provider component
@@ -178,7 +179,7 @@ export const ResourceProvider: React.FC<{ children: ReactNode }> = ({
         const matchesCategories =
           currentState.filters.categories.length === 0 ||
           resource.categories.some((category) =>
-            currentState.filters.categories.includes(category),
+            currentState.filters.categories.includes(category)
           );
 
         return (
@@ -186,7 +187,7 @@ export const ResourceProvider: React.FC<{ children: ReactNode }> = ({
         );
       });
     },
-    [],
+    []
   );
 
   // Set search query and filter resources
@@ -200,7 +201,7 @@ export const ResourceProvider: React.FC<{ children: ReactNode }> = ({
         };
       });
     },
-    [filterResources],
+    [filterResources]
   );
 
   // Toggle a filter and update filtered resources
@@ -230,7 +231,7 @@ export const ResourceProvider: React.FC<{ children: ReactNode }> = ({
         };
       });
     },
-    [filterResources],
+    [filterResources]
   );
 
   // Clear all filters
@@ -246,7 +247,7 @@ export const ResourceProvider: React.FC<{ children: ReactNode }> = ({
         ? prevState.resources.filter((resource) =>
             resource.title
               .toLowerCase()
-              .includes(prevState.searchQuery.toLowerCase()),
+              .includes(prevState.searchQuery.toLowerCase())
           )
         : prevState.resources,
     }));
@@ -269,18 +270,73 @@ export const ResourceProvider: React.FC<{ children: ReactNode }> = ({
   }, []);
 
   // Helper function to get the appropriate icon for a resource type
+  // const getResourceIcon = useCallback((type: ResourceType): JSX.Element => {
+  //   switch (type) {
+  //     case "PDF":
+  //       return (
+  //         <Flex
+  //           bg="white"
+  //           borderRadius="md"
+  //           p={1.5}
+  //           boxShadow="sm"
+  //           alignItems="center"
+  //           gap={1}
+  //         >
+  //           <FileTextIcon size={12} color="gray.700" />
+  //           <Text fontSize="xs" fontWeight="bold" color="gray.700">
+  //             PDF
+  //           </Text>
+  //         </Flex>
+  //       );
+  //     case "Video":
+  //       return (
+  //         <Box bg="white" borderRadius="md" p={1.5} boxShadow="sm">
+  //           <PlayIcon size={16} color="gray.700" />
+  //         </Box>
+  //       );
+  //     case "Link":
+  //       return (
+  //         <Box bg="white" borderRadius="md" p={1.5} boxShadow="sm">
+  //           <LinkIcon size={16} color="gray.700" />
+  //         </Box>
+  //       );
+  //     case "DOC":
+  //       return (
+  //         <Flex
+  //           bg="white"
+  //           borderRadius="md"
+  //           p={1.5}
+  //           boxShadow="sm"
+  //           alignItems="center"
+  //           gap={1}
+  //         >
+  //           <FileTextIcon size={12} color="gray.700" />
+  //           <Text fontSize="xs" fontWeight="bold" color="gray.700">
+  //             DOC
+  //           </Text>
+  //         </Flex>
+  //       );
+  //     default:
+  //       return (
+  //         <Box bg="white" borderRadius="md" p={1.5} boxShadow="sm">
+  //           <FileTextIcon size={16} color="gray.700" />
+  //         </Box>
+  //       );
+  //   }
+  // }, []);
+
   const getResourceIcon = useCallback((type: ResourceType): JSX.Element => {
     switch (type) {
       case "PDF":
-        return <FileTextIcon className="h-5 w-5" />;
+        return <FileTextIcon size={25} color="black" />;
       case "Video":
-        return <PlayIcon className="h-5 w-5" />;
+        return <PlayIcon size={25} color="black" />;
       case "Link":
-        return <LinkIcon className="h-5 w-5" />;
+        return <LinkIcon size={25} color="black" />;
       case "DOC":
-        return <FileTextIcon className="h-5 w-5" />;
+        return <FileTextIcon size={25} color="black" />;
       default:
-        return <FileTextIcon className="h-5 w-5" />;
+        return <FileTextIcon size={25} color="black" />;
     }
   }, []);
 
@@ -302,7 +358,7 @@ export const ResourceProvider: React.FC<{ children: ReactNode }> = ({
       toggleUserMode,
       toggleFilterSidebar,
       getResourceIcon,
-    ],
+    ]
   );
 
   return (

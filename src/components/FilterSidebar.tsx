@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp, Filter } from "lucide-react";
+import { Box, Flex, Text, Button, Checkbox, Stack } from "@chakra-ui/react";
 import { useResources } from "../context/ResourceContext";
 
 interface FilterSidebarProps {
@@ -16,7 +15,6 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   const { filters, toggleFilter } = useResources();
   const [showFilters, setShowFilters] = useState(!isMobile);
 
-  // Filter categories with their current state
   const filterCategories = [
     {
       title: "Key Foundational Principles",
@@ -84,10 +82,10 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
           label: "Sample",
           checked: filters.categories.includes("Sample"),
         },
-        { id: "Sample", label: "Sample", checked: false },
-        { id: "Sample", label: "Sample", checked: false },
-        { id: "Sample", label: "Sample", checked: false },
-        { id: "Sample", label: "Sample", checked: false },
+        { id: "Sample2", label: "Sample", checked: false },
+        { id: "Sample3", label: "Sample", checked: false },
+        { id: "Sample4", label: "Sample", checked: false },
+        { id: "Sample5", label: "Sample", checked: false },
       ],
     },
   ];
@@ -99,69 +97,86 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   const handleCheckboxChange = (
     filterType: "tags" | "documentTypes" | "categories",
     value: string,
-    checked: boolean,
+    checked: boolean
   ) => {
     toggleFilter(filterType, value);
   };
 
   return (
-    <div className={`bg-white ${className}`}>
+    <Box
+      bg="gray.50" /* Subtle background for contrast */
+      p={isMobile ? "4" : "6"} /* Increased padding on desktop */
+      borderRadius="md"
+      boxShadow="sm"
+      className={className}
+    >
       {isMobile && (
         <Button
           variant="outline"
-          className="w-full mb-4 flex items-center justify-center gap-2"
+          w="full"
+          mb="4"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          gap="2"
           onClick={toggleFilters}
         >
-          <Filter className="h-4 w-4" />
-          <span>{showFilters ? "Hide Filters" : "Show Filters"}</span>
-          {showFilters ? (
-            <ChevronUp className="h-4 w-4" />
-          ) : (
-            <ChevronDown className="h-4 w-4" />
-          )}
+          <Filter size={16} />
+          <Text>{showFilters ? "Hide Filters" : "Show Filters"}</Text>
+          {showFilters ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
         </Button>
       )}
 
       {showFilters && (
-        <div className="space-y-6">
-          <h2 className="text-lg font-semibold text-gray-900">Filters</h2>
+        <Stack spacing="6">
+          <Text as="h2" fontSize="lg" fontWeight="semibold" color="gray.900">
+            Filters
+          </Text>
+
+          <hr />
 
           {filterCategories.map((category, categoryIndex) => (
-            <div key={category.title} className="space-y-3">
-              <h3 className="font-medium text-gray-900">{category.title}</h3>
+            <Stack key={category.title} spacing="4" /* Increased spacing */>
+              <Text as="h3" fontWeight="medium" color="gray.900">
+                {category.title}
+              </Text>
 
-              <div className="space-y-3">
+              <Stack spacing="3">
                 {category.options.map((option, optionIndex) => (
-                  <div
+                  <Flex
                     key={`${option.id}-${optionIndex}`}
-                    className="flex items-center space-x-3"
+                    alignItems="center"
+                    gap="4" /* Increased gap */
                   >
                     <Checkbox
                       id={`${category.title}-${option.id}-${optionIndex}`}
-                      checked={option.checked}
-                      onCheckedChange={(checked) =>
+                      isChecked={option.checked}
+                      onChange={(e) =>
                         handleCheckboxChange(
                           category.type,
                           option.id,
-                          checked === true,
+                          e.target.checked
                         )
                       }
-                      className="data-[state=checked]:bg-gray-900 data-[state=checked]:border-gray-900"
+                      colorScheme="blue" /* Changed to blue for contrast */
                     />
-                    <label
+                    <Text
+                      as="label"
                       htmlFor={`${category.title}-${option.id}-${optionIndex}`}
-                      className="text-sm text-gray-700 leading-none cursor-pointer"
+                      fontSize="sm"
+                      color="gray.700"
+                      cursor="pointer"
                     >
                       {option.label}
-                    </label>
-                  </div>
+                    </Text>
+                  </Flex>
                 ))}
-              </div>
-            </div>
+              </Stack>
+            </Stack>
           ))}
-        </div>
+        </Stack>
       )}
-    </div>
+    </Box>
   );
 };
 
